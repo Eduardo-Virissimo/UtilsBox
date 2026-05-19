@@ -1,41 +1,39 @@
-'use client'
+'use client';
 
-import { useEffect, useState } from 'react'
-import { ArrowDown } from 'lucide-react'
+import { useEffect, useState } from 'react';
+import { ArrowDown } from 'lucide-react';
 
-const roles = [
-  'Full Stack Developer',
-  'UI/UX Designer',
-  'Problem Solver',
-  'Creative Coder',
-]
+const roles = ['Full Stack Developer', 'UI/UX Designer', 'Problem Solver', 'Creative Coder'];
 
 export function Hero() {
-  const [currentRole, setCurrentRole] = useState(0)
-  const [displayText, setDisplayText] = useState('')
-  const [isDeleting, setIsDeleting] = useState(false)
+  const [currentRole, setCurrentRole] = useState(0);
+  const [displayText, setDisplayText] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
-    const role = roles[currentRole]
-    const timeout = setTimeout(() => {
-      if (!isDeleting) {
-        if (displayText.length < role.length) {
-          setDisplayText(role.slice(0, displayText.length + 1))
+    const role = roles[currentRole];
+    const timeout = setTimeout(
+      () => {
+        if (!isDeleting) {
+          if (displayText.length < role.length) {
+            setDisplayText(role.slice(0, displayText.length + 1));
+          } else {
+            setTimeout(() => setIsDeleting(true), 2000);
+          }
         } else {
-          setTimeout(() => setIsDeleting(true), 2000)
+          if (displayText.length > 0) {
+            setDisplayText(displayText.slice(0, -1));
+          } else {
+            setIsDeleting(false);
+            setCurrentRole((prev) => (prev + 1) % roles.length);
+          }
         }
-      } else {
-        if (displayText.length > 0) {
-          setDisplayText(displayText.slice(0, -1))
-        } else {
-          setIsDeleting(false)
-          setCurrentRole((prev) => (prev + 1) % roles.length)
-        }
-      }
-    }, isDeleting ? 50 : 100)
+      },
+      isDeleting ? 50 : 100
+    );
 
-    return () => clearTimeout(timeout)
-  }, [displayText, isDeleting, currentRole])
+    return () => clearTimeout(timeout);
+  }, [displayText, isDeleting, currentRole]);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -55,10 +53,16 @@ export function Hero() {
 
         {/* Floating orbs */}
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse-glow" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent/10 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: '1.5s' }} />
+        <div
+          className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent/10 rounded-full blur-3xl animate-pulse-glow"
+          style={{ animationDelay: '1.5s' }}
+        />
 
         {/* Decorative lines */}
-        <svg className="absolute top-0 left-0 w-full h-full opacity-20" xmlns="http://www.w3.org/2000/svg">
+        <svg
+          className="absolute top-0 left-0 w-full h-full opacity-20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
           <defs>
             <linearGradient id="line-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stopColor="oklch(0.75 0.18 145)" stopOpacity="0" />
@@ -100,8 +104,8 @@ export function Hero() {
 
         {/* Description */}
         <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-12 leading-relaxed">
-          Transformo ideias em experiências digitais únicas, combinando código limpo
-          com design inovador para criar soluções que fazem a diferença.
+          Transformo ideias em experiências digitais únicas, combinando código limpo com design
+          inovador para criar soluções que fazem a diferença.
         </p>
 
         {/* CTA Buttons */}
@@ -126,7 +130,10 @@ export function Hero() {
 
         {/* Scroll indicator */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-float">
-          <a href="#sobre" className="flex flex-col items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
+          <a
+            href="#sobre"
+            className="flex flex-col items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
+          >
             <span className="text-sm font-mono">scroll</span>
             <ArrowDown className="w-5 h-5" />
           </a>
@@ -137,5 +144,5 @@ export function Hero() {
       <div className="absolute top-8 left-8 w-24 h-24 border-l-2 border-t-2 border-primary/30 rounded-tl-lg" />
       <div className="absolute bottom-8 right-8 w-24 h-24 border-r-2 border-b-2 border-primary/30 rounded-br-lg" />
     </section>
-  )
+  );
 }
